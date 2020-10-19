@@ -74,6 +74,20 @@ for i in range(1,6):
 missile_list = pygame.sprite.Group()
 enemycount = 0
 
+destroyed = 0
+
+#Trying to make a game over screen
+def endgame():
+    for enemy in enemy_list:
+        if enemy.rect.x < 50:
+            win.blit(bg,(0,0))
+            font = pygame.font.SysFont('Times New Roman',30)
+            text = font.render("Game Over, You destroyed {} Asteroids".format(destroyed), False, white)
+            textRect = text.get_rect()
+            textRect.center = (500,500)
+            win.blit(text,textRect)   
+
+
 
 #You put the redraw function here which updates the game repeatedly until certain conditions are met
 def redraw():
@@ -81,14 +95,21 @@ def redraw():
     font = pygame.font.SysFont('Times New Roman',30)
     text = font.render("Jp's Spaceship Vs. The Asteroids", False, white)
     textRect = text.get_rect()
-    textRect.center = (1000//2,25)
-    win.blit(text,textRect)                              
+    textRect.center = (250,25)
+    win.blit(text,textRect)   
+    font = pygame.font.SysFont('Times New Roman',30)
+    text = font.render('Asteroids destroyed: {}'.format(destroyed), False, white)
+    textRect = text.get_rect()
+    textRect.center = (750,25)
+    win.blit(text,textRect)                            
     ship.draw()
     enemy_list.update()
     enemy_list.draw(win)
     missile_list.update()
     missile_list.draw(win)
+    endgame()
     pygame.display.update()
+    
 #This is where you run the game and quit when you press the x in the corner
 run = True
 
@@ -119,6 +140,7 @@ while run:
             missile_list.remove(missile)
         for enemy in enemy_list:
             if missile.rect.colliderect(enemy.rect):
+                destroyed += 1
                 missile_list.remove(missile)
                 enemy_list.remove(enemy)  
                 enemy = Enemy()
@@ -128,18 +150,17 @@ while run:
                 
                 enemycount +=1
 
-                if enemycount // 5 == 0:
+                if enemycount %5 == 0:
                     enemy2 = Enemy()
                     enemy2.rect.x = random.randint(750,950)
                     enemy2.rect.y = random.randint(50,950)
                     enemy_list.add(enemy2)
+                     
+
+   
                     
 
-    for enemy in enemy_list:
-        if enemy.rect.x < 50:
-                    
-
-            run = False
+            
 
             
             
