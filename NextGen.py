@@ -2,7 +2,9 @@
 import random
 import pygame
 pygame.init()
-win = pygame.display.set_mode((1000,1000))
+screenwidth = 1500
+screenheigt = 750
+win = pygame.display.set_mode((screenwidth,screenheigt))
 
 
 #this will save you from having to remember the numbers to use the colors
@@ -64,10 +66,10 @@ ship.rect.y = 500
 
 enemy_list = pygame.sprite.Group()
 
-for i in range(1,6):
+for i in range(1,10):
     enemy = Enemy()
-    enemy.rect.x = random.randint(750,950)
-    enemy.rect.y = random.randint(50,950)
+    enemy.rect.x = random.randint(screenwidth - (screenwidth//5),screenwidth - 50)
+    enemy.rect.y = random.randint(50,screenheigt - 50)
     enemy_list.add(enemy)
 
 
@@ -84,7 +86,7 @@ def endgame():
             font = pygame.font.SysFont('Times New Roman',30)
             text = font.render("Game Over, You destroyed {} Asteroids".format(destroyed), False, white)
             textRect = text.get_rect()
-            textRect.center = (500,500)
+            textRect.center = (screenwidth//2,screenheigt//2)
             win.blit(text,textRect)   
 
 
@@ -95,12 +97,12 @@ def redraw():
     font = pygame.font.SysFont('Times New Roman',30)
     text = font.render("Jp's Spaceship Vs. The Asteroids", False, white)
     textRect = text.get_rect()
-    textRect.center = (250,25)
+    textRect.center = (screenwidth//3 , 25)
     win.blit(text,textRect)   
     font = pygame.font.SysFont('Times New Roman',30)
     text = font.render('Asteroids destroyed: {}'.format(destroyed), False, white)
     textRect = text.get_rect()
-    textRect.center = (750,25)
+    textRect.center = ((screenwidth//3)*2 , 25)
     win.blit(text,textRect)                            
     ship.draw()
     enemy_list.update()
@@ -136,7 +138,7 @@ while run:
             
 
     for missile in missile_list:
-        if missile.rect.x > 1000:
+        if missile.rect.x > screenwidth:
             missile_list.remove(missile)
         for enemy in enemy_list:
             if missile.rect.colliderect(enemy.rect):
@@ -144,18 +146,19 @@ while run:
                 missile_list.remove(missile)
                 enemy_list.remove(enemy)  
                 enemy = Enemy()
-                enemy.rect.x = random.randint(750,950)
-                enemy.rect.y = random.randint(50,950)
+                enemy.rect.x = random.randint(screenwidth - (screenwidth//5),screenwidth - 50)
+                enemy.rect.y = random.randint(50,screenheigt - 50)
                 enemy_list.add(enemy)
                 
                 enemycount +=1
 
                 if enemycount %5 == 0:
                     enemy2 = Enemy()
-                    enemy2.rect.x = random.randint(750,950)
-                    enemy2.rect.y = random.randint(50,950)
+                    enemy2.rect.x = random.randint(screenwidth - (screenwidth//5),screenwidth - 50)
+                    enemy2.rect.y = random.randint(50,screenheigt - 500)
+                    
                     enemy_list.add(enemy2)
-                     
+                    
 
    
                     
